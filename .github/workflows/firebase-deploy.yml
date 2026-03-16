@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install HTMLHint
       run: npm install -g htmlhint
@@ -20,7 +20,7 @@ jobs:
       run: htmlhint *.html
 
     - name: Deploy to Firebase
-      uses: FirebaseExtended/action-hosting-deploy@v0
+      uses: FirebaseExtended/action-hosting-deploy@v1
       with:
         repoToken: ${{ secrets.GITHUB_TOKEN }}
         firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
