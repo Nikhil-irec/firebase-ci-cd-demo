@@ -1,4 +1,4 @@
-name: Deploy to Firebase
+name: Firebase CI/CD
 
 on:
   push:
@@ -10,14 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+    - name: Install HTMLHint
+      run: npm install -g htmlhint
 
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
+    - name: Run HTML Tests
+      run: htmlhint *.html
 
-      - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --token "$FIREBASE_TOKEN"
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    - name: Deploy to Firebase
+      uses: FirebaseExtended/action-hosting-deploy@v0
+      with:
+        repoToken: ${{ secrets.GITHUB_TOKEN }}
+        firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        channelId: live
+        projectId: firebase-ci-cd-demo
+        
+        
